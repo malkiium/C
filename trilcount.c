@@ -8,7 +8,7 @@ int main() {
 
     start = clock();
     for (count = 0; count < 1000000000; count++) {
-        printf("%lld\n", count);
+        ;
     }
     end = clock();
 
