@@ -63,8 +63,8 @@ void scan_directory(const char *path) {
         if (stat(full_path, &file_stat) == 0) {
             if (S_ISREG(file_stat.st_mode)) {
                 // If it's a regular file and larger than SIZE_LIMIT, print it
-                if (file_stat.st_size > SIZE_LIMIT) {
-                    printf("Large file: %s (%lld GB)\n", full_path, file_stat.st_size / (1024 * 1024 * 1024));
+                if (file_stat.st_size > (long)SIZE_LIMIT) {  // Cast to long for comparison
+                    printf("Large file: %s (%ld GB)\n", full_path, file_stat.st_size / (1024 * 1024 * 1024));
                 }
             } else if (S_ISDIR(file_stat.st_mode)) {
                 // If it's a directory, calculate its size
