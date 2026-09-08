@@ -24,7 +24,7 @@ int main() {
     int i = 35;
     printf("valeur de i = %d\n", i);
     void * ptr = &i;
-    printf("valeur de ptr = %f\n", ptr);
+    printf("valeur de ptr = %d\n", ptr);
     float a = *(float *)ptr;
     printf("valeur de a = %f\n", a);
     
