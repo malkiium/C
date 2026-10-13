@@ -106,6 +106,7 @@ int main() {
   printf("\n\n");
   printf("l'annee de naissance du %s ", grade);
   printf("est de : %d\n", annee);
+  printf("son age est : %d\n", 2259 - annee);
   char *fileName = "total.bin";
   FILE *fichier = fopen(fileName, "wb");
   fclose(fichier);
