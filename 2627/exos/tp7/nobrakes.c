@@ -24,8 +24,25 @@ void creeNiveau(Niveau *niv, int l, int h) {
   assert((l > 0 && h > 0) && "error creeNiveau: wrong dimension");
 
   /* copie les dimensions */
+  niv->largeur = l;
+  niv->hauteur = h;
 
   /* allocation memoire */
+  niv->carte = malloc(sizeof(niv->carte[0])*h);
+  if (niv->carte == NULL) {
+    free(niv->carte);
+    ERROR("malloc carte");
+  }
+  for (int i=0; i<h; i++) {
+    niv->carte[i] = malloc(sizeof(niv->carte[i][0])*l);
+    if (niv->carte[i] == NULL) {
+      for (int j=i; j>=0; j--) {
+        free(niv->carte[j]);
+      }
+      free(niv->carte);
+      ERROR("malloc carte[i]");
+    }
+  }
 
   /* initialisation carte */
   initNiveau(niv);
@@ -33,8 +50,7 @@ void creeNiveau(Niveau *niv, int l, int h) {
 
 void detruitNiveau(Niveau *niv) {
   assert((niv != NULL) && "error detruitNiveau: void data");
-  assert((niv->largeur > 0 && niv->hauteur > 0) &&
-         "error detruitNiveau: wrong dimension");
+  assert((niv->largeur > 0 && niv->hauteur > 0) && "error detruitNiveau: wrong dimension");
 
   /* desallocation */
 
@@ -49,7 +65,6 @@ void initNiveau(Niveau *niv) {
 
 void afficheNiveau(Niveau *niv) {
   assert((niv != NULL) && "error afficheNiveau: void data");
-
   /* nettoie le terminal */
   clearScreen();
 
@@ -135,8 +150,7 @@ void play(Niveau *niv) {
   } while (res);
 
   /* affichage final */
-  printf("%s\n", ((niv->position != -1) ? "SORTIE ATTEINTE!"
-                                        : "PERDU DANS L'ESPACE..."));
+  printf("%s\n", ((niv->position != -1) ? "SORTIE ATTEINTE!" : "PERDU DANS L'ESPACE..."));
   afficheNiveau(niv);
 }
 
