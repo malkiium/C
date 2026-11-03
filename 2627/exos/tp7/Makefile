@@ -13,7 +13,7 @@ CC = gcc
 EXE = nobrakes
 
 # flags de compilation (CFLAGS) et d'edition de liens (LDFLAGS)
-CFLAGS += -Wall -Wextra -ansi -MMD -g -O2
+CFLAGS += -Wall -Wextra -std=c99 -MMD -g -O2
 LDFLAGS= #-lm
 
 # regle principale: generer l'executable

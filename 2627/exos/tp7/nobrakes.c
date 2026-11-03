@@ -59,8 +59,16 @@ void detruitNiveau(Niveau *niv) {
 
 void initNiveau(Niveau *niv) {
   /* vide carte */
+  for (int i=0; i<niv->hauteur; i++) {
+    for (int j=0; j<niv->largeur; j++) {
+      niv->carte[i][j] = VIDE;
+    }
+  }
 
   /* initialisation etat */
+  niv->position=-1;
+  niv->nb_coups=-1;
+  niv->nb_bonus=-1;
 }
 
 void afficheNiveau(Niveau *niv) {
@@ -71,6 +79,9 @@ void afficheNiveau(Niveau *niv) {
   /* affiche carte */
 
   /* affiche etat */
+  printf("Pos : %d\n", niv->position);
+  printf("Bonus : %d\n", niv->nb_bonus);
+  printf("Coups : %d\n", niv->nb_coups);
 }
 
 void litNiveau(const char filename[], Niveau *niv) {
@@ -79,17 +90,40 @@ void litNiveau(const char filename[], Niveau *niv) {
   assert((niv != NULL) && "error litNiveau: void data");
 
   /* ouvre le fichier */
+  FILE * fil = fopen(filename, "rt");
 
   /* lit les dimensions */
+  assert(fscanf(fil, "%5i%5i", &largeur, &hauteur)==2);
 
   /* cree le niveau */
   creeNiveau(niv, largeur, hauteur);
 
   /* lit le niveau */
-
   assert((niv->position != -1) && "error litNiveau: no initial position");
 
+  int c;
+  for (int i=0; i<niv->hauteur; i++) {
+    for (int j=0; j<niv->largeur; j++) {
+      c=fgetc(fil);
+      switch (c) {
+        case 'X' : niv->carte[i][j]=MUR;
+        break;
+        case 'd' : niv->carte[i][j]=DEBUT;
+        niv->position=i*niv->largeur+j;
+        break;
+        case 'f' : niv->carte[i][j]=FIN;
+        break;
+        case '$' : niv->carte[i][j]=BONUS;
+        niv->nb_bonus+=1;
+        break;
+        case ' ' : niv->carte[i][j]=VIDE;
+        break;
+      }
+    }
+  }
+
   /* ferme le fichier */
+  fclose(fil);
 }
 
 void copieNiveau(Niveau *niv1, Niveau *niv2) {
